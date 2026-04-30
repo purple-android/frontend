@@ -4,7 +4,8 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/")
+    // fetch("http://localhost:5000/")
+    fetch("https://backend-v1yl.onrender.com/")
       .then((res) => res.json())
       .then((data) => {
         setMessage(data.message);
