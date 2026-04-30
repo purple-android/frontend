@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { useNotesContext } from '../hooks/useNotesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 
+// const BACKEND_URL = 'http://localhost:4000'
+const BACKEND_URL = 'https://backend-v1yl.onrender.com/'
+
 const NoteForm = () => {
   const { dispatch } = useNotesContext()
   const { user } = useAuthContext()
@@ -22,7 +25,7 @@ const NoteForm = () => {
     const note = {title, section}
     
     try {
-        const response = await fetch('https://backend-v1yl.onrender.com/api/notes', {
+        const response = await fetch(BACKEND_URL + '/api/notes', {
           method: 'POST',
           body: JSON.stringify(note),
           headers: {

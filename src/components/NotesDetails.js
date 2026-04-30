@@ -4,6 +4,9 @@ import { useAuthContext } from '../hooks/useAuthContext'
 // date fns
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
+// const BACKEND_URL = 'http://localhost:4000'
+const BACKEND_URL = 'https://backend-v1yl.onrender.com/'
+
 const NoteDetails = ({ note }) => {
   const { dispatch } = useNotesContext()
   const { user } = useAuthContext()
@@ -13,7 +16,7 @@ const NoteDetails = ({ note }) => {
       return
     }
 
-    const response = await fetch('https://backend-v1yl.onrender.com/api/notes/' + note._id, {
+    const response = await fetch(BACKEND_URL + '/api/notes/' + note._id, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${user.token}`
