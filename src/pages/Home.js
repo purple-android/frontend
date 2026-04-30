@@ -12,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      const response = await fetch('http://localhost:4000/api/notes', {
+      const response = await fetch('https://backend-v1yl.onrender.com/api/notes/', {
         headers: {'Authorization': `Bearer ${user.token}`},
       })
       const json = await response.json()
