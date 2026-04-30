@@ -18,8 +18,8 @@ function App() {
   return (
     <div>
       <h1>Hello</h1>
-      {/* {message && <p>{message}</p>} */}
-      <p>{message}</p>
+      {message && <p>{message}</p>}
+      {/* <p>{message}</p> */}
     </div>
   );
 }
