@@ -133,98 +133,126 @@ const Home = () => {
   return (
     <div className="home">
 
-      <form className="create" onSubmit={handleUpload}>
-        <h3>Upload Files</h3>
-        <p>Allowed:.pdf, .doc, .docx, .txt</p>
+      {/* ======================== UPLOAD CARD ======================== */}
+      <div className="upload-card">
+        <div className="upload-card-header">
+          <h3>Upload Files</h3>
+          <p>Accepted formats: PDF, DOC, DOCX, TXT</p>
+        </div>
 
-        <label>Choose files (you can select multiple):</label>
-        <input
-          type="file"
-          accept=".pdf,.doc,.docx,.txt"
-          onChange={handleFileChange}
-          multiple
-        />
+        <form onSubmit={handleUpload}>
 
-        <button>
-          {selectedFiles.length > 0
-            ? `Upload ${selectedFiles.length} file${selectedFiles.length > 1 ? 's' : ''}`
-            : 'Upload'}
-        </button>
+          <div className={`upload-dropzone ${selectedFiles.length > 0 ? 'has-files' : ''}`}>
+            <div className="upload-dropzone-icon">☁️</div>
 
-        {error && <div className="error">{error}</div>}
-      </form>
+            <p className="upload-dropzone-text">
+              {selectedFiles.length > 0
+                ? `${selectedFiles.length} file${selectedFiles.length > 1 ? 's' : ''} selected`
+                : 'Click to browse files'}
+            </p>
+            <span className="upload-dropzone-hint">PDF, DOC, DOCX, TXT · max 50 files</span>
 
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.txt"
+              onChange={handleFileChange}
+              multiple
+            />
+          </div>
+
+          <button className="upload-btn">
+            {selectedFiles.length > 0
+              ? `Upload ${selectedFiles.length} file${selectedFiles.length > 1 ? 's' : ''}`
+              : 'Upload'}
+          </button>
+
+          {error && <div className="error">{error}</div>}
+        </form>
+      </div>
+
+      {/* ======================== UPLOAD QUEUE ======================== */}
       {queue.length > 0 && (
-        <div className="upload-queue">
+        <div className="queue-card">
           <h3>Upload Progress</h3>
+
           {queue.map((item, idx) => (
             <div key={idx} className="queue-item">
+
               <span className="queue-filename">{item.name}</span>
-              {item.status === 'queued' && (
-                <span className="queue-status queued">Queued</span>
-              )}
-              {item.status === 'uploading' && (
-                <span className="queue-status uploading">Uploading {item.progress}%</span>
-              )}
-              {item.status === 'done' && (
-                <span className="queue-status done">Done</span>
-              )}
-              {item.status === 'error' && (
-                <span className="queue-status error">{item.error}</span>
-              )}
 
               {item.status === 'uploading' && (
-                <div style={{ background: '#ddd', borderRadius: '4px', height: '8px', marginTop: '6px' }}>
-                  <div style={{
-                    background: '#4CAF50',
-                    width: item.progress + '%',
-                    height: '8px',
-                    borderRadius: '4px',
-                    transition: 'width 0.2s ease'
-                  }} />
+                <div className="queue-progress-bar">
+                  <div className="queue-progress-fill" style={{ width: item.progress + '%' }} />
                 </div>
               )}
+
+              <span className={`queue-status ${item.status}`}>
+                {item.status === 'queued'    && 'Queued'}
+                {item.status === 'uploading' && item.progress + '%'}
+                {item.status === 'done'      && '✓ Done'}
+                {item.status === 'error'     && item.error}
+              </span>
 
             </div>
           ))}
 
           {queue.every(item => item.status === 'done' || item.status === 'error') && (
-            <button onClick={() => setQueue([])}>Clear</button>
+            <button className="queue-clear-btn" onClick={() => setQueue([])}>
+              Clear
+            </button>
           )}
         </div>
       )}
 
-      <div className="files">
-        <h3>Your Files ({files.length} / {MAX_FILES})</h3>
+      {/* ======================== FILES SECTION ======================== */}
+      <div className="files-section">
 
-        {files.length === 0 && <p>No files uploaded yet.</p>}
-        {files.map(file => (
-          <div className="file-details" key={file._id}>
+        <div className="files-section-header">
+          <h3>Your Files</h3>
+          <span className="files-count-badge">{files.length} / {MAX_FILES}</span>
+        </div>
 
-            <span style={{ fontSize: '40px', display: 'block', marginBottom: '8px' }}>📄</span>
-
-            <h4>{file.originalName}</h4>
-
-            <p>Size: {formatSize(file.size)}</p>
-            <p>Uploaded: {new Date(file.createdAt).toLocaleDateString()}</p>
-              <a
-                href={BACKEND_URL + '/uploads/' + file.filename}
-                target="_blank"
-                rel="noreferrer"
-              >
-              Download
-            </a>
-
-            <span
-              className="material-symbols-outlined"
-              onClick={() => handleDelete(file._id)}
-              style={{ cursor: 'pointer', marginLeft: '12px', verticalAlign: 'middle' }}
-            >
-              delete
-            </span>
-
+        {files.length === 0 && (
+          <div className="files-empty">
+            <div className="files-empty-icon">📁</div>
+            <p>No files uploaded yet</p>
           </div>
-        ))}
+        )}
+
+        <div className="files-grid">
+          {files.map(file => (
+            <div className="file-card" key={file._id}>
+
+              <div className="file-card-icon">📄</div>
+
+              <div className="file-card-name">{file.originalName}</div>
+
+              <div className="file-card-meta">
+                {formatSize(file.size)} · {new Date(file.createdAt).toLocaleDateString()}
+              </div>
+
+              <div className="file-card-actions">
+                <a
+                  className="file-card-download"
+                  href={BACKEND_URL + '/uploads/' + file.filename}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Download
+                </a>
+
+                <span
+                  className="file-card-delete material-symbols-outlined"
+                  onClick={() => handleDelete(file._id)}
+                >
+                  delete
+                </span>
+              </div>
+
+            </div>
+          ))}
+        </div>
+
       </div>
 
     </div>

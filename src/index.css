@@ -1,130 +1,568 @@
-/* google font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+/* ============================================================
+   FONT
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* layout */
+/* ============================================================
+   DESIGN TOKENS  — change these to retheme the whole app
+   ============================================================ */
 :root {
-  --primary: #1aac83;
-  --error: #e7195a;
+  --bg:            #f0f2f8;       /* page background          */
+  --surface:       #ffffff;       /* card / panel background  */
+  --primary:       #6366f1;       /* indigo accent            */
+  --primary-hover: #4f46e5;       /* darker indigo on hover   */
+  --primary-light: #eef2ff;       /* pale indigo tint         */
+  --text:          #111827;       /* main text                */
+  --text-light:    #6b7280;       /* secondary / muted text   */
+  --border:        #e5e7eb;       /* subtle dividers          */
+  --error:         #ef4444;       /* red for errors           */
+  --error-bg:      #fef2f2;       /* pale red background      */
+  --success:       #10b981;       /* green for done status    */
+  --radius:        12px;          /* default border radius    */
+  --shadow:        0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
 }
-body {
-  background: #f1f1f1;
+
+/* ============================================================
+   GLOBAL RESET
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
-  font-family: "Poppins";
+  padding: 0;
 }
+
+body {
+  background: var(--bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
 header {
-  background: #fff;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  /* stays at the top when scrolling */
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
+
+/* inner wrapper limits width and centres content */
 header .container {
-  max-width: 1400px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 10px 20px;
+  padding: 0 24px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 header a {
-  color: #333;
   text-decoration: none;
-}
-.pages{
-  max-width: 1400px;
-  padding: 20px;
-  margin: 0 auto;
+  color: inherit;
 }
 
-/* homepage */
-.home {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 100px;
-}
-.workout-details {
-  background: #fff;
-  border-radius: 4px;
-  margin: 20px auto;
-  padding: 20px;
-  position: relative;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-}
-.workout-details h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
+/* app name in the navbar */
+header h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--primary);
-}
-.workout-details p {
-  margin: 0;
-  font-size: 0.9em;
-  color: #555;
-}
-.workout-details span {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
-  border-radius: 50%;
-  color: #333;
+  letter-spacing: -0.2px;
 }
 
-/* new workout form */
-label, input {
-  display: block;
-}
-input {
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-form button {
-  background: var(--primary);
-  border: 0;
-  color: #fff;
-  padding: 10px;
-  font-family: "Poppins";
-  border-radius: 4px;
-  cursor: pointer;
-}
-div.error {
-  padding: 10px;
-  background: #ffefef;
-  border: 1px solid var(--error);
-  color: var(--error);
-  border-radius: 4px;
-  margin: 20px 0;
-}
-input.error {
-  border: 1px solid var(--error);
-}
-
-/* navbar */
+/* right-side nav area */
 nav {
   display: flex;
   align-items: center;
-}
-nav a, nav button {
-  margin-left: 10px;
-}
-nav button {
-  background: #fff;
-  color: var(--primary);
-  border: 2px solid var(--primary);
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-family: "Poppins";
-  cursor: pointer;
-  font-size: 1em;
+  gap: 16px;
 }
 
-/* auth forms */
-form.signup, form.login {
-  max-width: 400px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #fff;
+/* email address shown when logged in */
+nav span {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+/* login / signup links */
+nav a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+nav a:hover {
+  color: var(--primary);
+}
+
+/* log out button */
+nav button {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+nav button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ============================================================
+   PAGE WRAPPER
+   ============================================================ */
+.pages {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+/* ============================================================
+   SHARED INPUT & LABEL STYLES  (used in auth forms)
+   ============================================================ */
+label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: #fafafa;
+  margin-bottom: 20px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+  background: white;
+}
+input.error {
+  border-color: var(--error);
+}
+
+/* ============================================================
+   ERROR BOX
+   ============================================================ */
+div.error {
+  padding: 12px 16px;
+  background: var(--error-bg);
+  border: 1px solid #fecaca;
+  color: var(--error);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-top: 16px;
+}
+
+/* ============================================================
+   AUTH FORMS  (Login & Signup pages)
+   ============================================================ */
+form.login,
+form.signup {
+  max-width: 420px;
+  margin: 80px auto 0;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 40px;
+  box-shadow: var(--shadow);
+}
+
+form.login h3,
+form.signup h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+/* submit button inside auth forms */
+form.login button,
+form.signup button {
+  width: 100%;
+  padding: 11px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin-top: 4px;
+}
+form.login button:hover:not(:disabled),
+form.signup button:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+form.login button:disabled,
+form.signup button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   HOME PAGE  —  stack cards vertically
+   ============================================================ */
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ============================================================
+   UPLOAD CARD
+   ============================================================ */
+.upload-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+
+.upload-card-header {
+  margin-bottom: 20px;
+}
+.upload-card-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.upload-card-header p {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+/* the dashed box the user clicks to pick files */
+.upload-dropzone {
+  position: relative;           /* needed so the hidden input fills it */
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 36px 24px;
+  text-align: center;
+  background: #fafafe;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.upload-dropzone:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+/* show indigo border when files are selected */
+.upload-dropzone.has-files {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* the actual file input — invisible, covers the whole dropzone */
+.upload-dropzone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.upload-dropzone-icon {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+.upload-dropzone-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.upload-dropzone-hint {
+  font-size: 0.78rem;
+  color: var(--text-light);
+}
+
+/* upload button below the dropzone */
+.upload-btn {
+  width: 100%;
+  padding: 11px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.upload-btn:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+.upload-btn:active:not(:disabled) {
+  transform: scale(0.99);
+}
+.upload-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   UPLOAD QUEUE / PROGRESS CARD
+   ============================================================ */
+.queue-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  box-shadow: var(--shadow);
+}
+.queue-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* one row per file */
+.queue-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+.queue-item:last-of-type {
+  border-bottom: none;
+}
+
+/* filename — truncates if too long */
+.queue-filename {
+  flex: 1;
+  font-size: 0.875rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;          /* needed for text-overflow to work in flex */
+}
+
+/* grey progress track */
+.queue-progress-bar {
+  flex: 1;
+  min-width: 60px;
+  background: #e5e7eb;
   border-radius: 4px;
+  height: 4px;
+  overflow: hidden;
+}
+/* coloured fill — width is set inline dynamically */
+.queue-progress-fill {
+  height: 4px;
+  background: var(--primary);
+  border-radius: 4px;
+  transition: width 0.2s ease;
+}
+
+/* coloured pill badge */
+.queue-status {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.queue-status.queued    { background: #f3f4f6;          color: var(--text-light); }
+.queue-status.uploading { background: var(--primary-light); color: var(--primary);    }
+.queue-status.done      { background: #ecfdf5;          color: var(--success);    }
+.queue-status.error     { background: var(--error-bg);  color: var(--error);      max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+
+/* clear button after all uploads finish */
+.queue-clear-btn {
+  margin-top: 20px;
+  padding: 7px 18px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.queue-clear-btn:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+/* ============================================================
+   FILES SECTION
+   ============================================================ */
+.files-section {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+
+.files-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.files-section-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+/* "12 / 50" pill */
+.files-count-badge {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-light);
+  background: #f3f4f6;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* centred empty state */
+.files-empty {
+  text-align: center;
+  padding: 56px 0;
+  color: var(--text-light);
+}
+.files-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+.files-empty p {
+  font-size: 0.9rem;
+}
+
+/* responsive grid of file cards */
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* ============================================================
+   FILE CARD
+   ============================================================ */
+.file-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.file-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.08);
+}
+
+.file-card-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+/* filename — bold and truncated */
+.file-card-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* size · date */
+.file-card-meta {
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+/* download + delete row */
+.file-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+/* Download button */
+.file-card-download {
+  flex: 1;
+  padding: 7px 0;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 7px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.file-card-download:hover {
+  background: #e0e7ff;
+}
+
+/* Delete icon button */
+.file-card-delete {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 1.15rem;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+  user-select: none;
+}
+.file-card-delete:hover {
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+/* ============================================================
+   RESPONSIVE  — single column on small screens
+   ============================================================ */
+@media (max-width: 600px) {
+  .pages           { padding: 20px 16px; }
+  .upload-card,
+  .queue-card,
+  .files-section   { padding: 24px 20px; }
+  form.login,
+  form.signup      { padding: 28px 20px; margin-top: 40px; }
+  .files-grid      { grid-template-columns: 1fr; }
 }
