@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 
-// const BACKEND_URL = 'http://localhost:4000'
-const BACKEND_URL = 'https://backend-v1yl.onrender.com'
+const BACKEND_URL = 'http://localhost:4000'
+// const BACKEND_URL = 'https://backend-v1yl.onrender.com'
 
 const MAX_FILES = 50
 
@@ -124,10 +124,6 @@ const Home = () => {
     }
   }
 
-  const isImage = (mimetype) => mimetype && mimetype.startsWith('image/')
-
-  const isVideo = (mimetype) => mimetype && mimetype.startsWith('video/')
-
   const formatSize = (bytes) => {
     if (bytes < 1024) return bytes + ' B'
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
@@ -139,12 +135,12 @@ const Home = () => {
 
       <form className="create" onSubmit={handleUpload}>
         <h3>Upload Files</h3>
-        <p>Allowed: images, videos, .pdf, .doc, .docx, .txt</p>
+        <p>Allowed:.pdf, .doc, .docx, .txt</p>
 
         <label>Choose files (you can select multiple):</label>
         <input
           type="file"
-          accept="image/*,video/*,.pdf,.doc,.docx,.txt"
+          accept=".pdf,.doc,.docx,.txt"
           onChange={handleFileChange}
           multiple
         />
@@ -204,47 +200,19 @@ const Home = () => {
         {files.length === 0 && <p>No files uploaded yet.</p>}
         {files.map(file => (
           <div className="file-details" key={file._id}>
-            {isImage(file.mimetype) && (
-              <img
-                src={BACKEND_URL + '/uploads/' + file.filename}
-                alt={file.originalName}
-                style={{
-                  width: '120px',
-                  height: '90px',
-                  objectFit: 'cover',
-                  borderRadius: '6px',
-                  display: 'block',
-                  marginBottom: '8px'
-                }}
-              />
-            )}
-            {isVideo(file.mimetype) && (
-              <video
-                src={BACKEND_URL + '/uploads/' + file.filename}
-                controls
-                style={{
-                  width: '200px',
-                  height: '120px',
-                  borderRadius: '6px',
-                  display: 'block',
-                  marginBottom: '8px'
-                }}
-              />
-            )}
-            {!isImage(file.mimetype) && !isVideo(file.mimetype) && (
-              <span style={{ fontSize: '40px', display: 'block', marginBottom: '8px' }}>📄</span>
-            )}
+
+            <span style={{ fontSize: '40px', display: 'block', marginBottom: '8px' }}>📄</span>
 
             <h4>{file.originalName}</h4>
 
             <p>Size: {formatSize(file.size)}</p>
             <p>Uploaded: {new Date(file.createdAt).toLocaleDateString()}</p>
-            <a
-              href={BACKEND_URL + '/uploads/' + file.filename}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {isImage(file.mimetype) || isVideo(file.mimetype) ? 'View' : 'Download'}
+              <a
+                href={BACKEND_URL + '/uploads/' + file.filename}
+                target="_blank"
+                rel="noreferrer"
+              >
+              Download
             </a>
 
             <span
