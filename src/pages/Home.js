@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 
-const BACKEND_URL = 'http://localhost:4000'
-// const BACKEND_URL = 'https://backend-v1yl.onrender.com'
+// const BACKEND_URL = 'http://localhost:4000'
+const BACKEND_URL = 'https://backend-v1yl.onrender.com'
 
 const MAX_FILES = 50
 
