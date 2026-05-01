@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 
-// const BACKEND_URL = 'http://localhost:4000'
-const BACKEND_URL = 'https://backend-v1yl.onrender.com'
+const BACKEND_URL = 'http://localhost:4000'
+// const BACKEND_URL = 'https://backend-v1yl.onrender.com'
 
 const MAX_FILES = 50
 
@@ -223,7 +223,16 @@ const Home = () => {
           {files.map(file => (
             <div className="file-card" key={file._id}>
 
-              <div className="file-card-icon">📄</div>
+              {file.thumbnailFilename ? (
+                <img
+                  className="file-card-thumbnail"
+                  src={BACKEND_URL + '/thumbnails/' + file.thumbnailFilename}
+                  alt={'Preview of ' + file.originalName}
+                />
+              ) : (
+                <div className="file-card-icon">📄</div>
+              )}
+
 
               <div className="file-card-name">{file.originalName}</div>
 
